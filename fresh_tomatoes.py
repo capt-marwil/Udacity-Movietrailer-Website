@@ -33,6 +33,7 @@ main_page_head = '''
             height: 100%;
         }
         .movie-tile {
+            height: 680px;
             margin-bottom: 20px;
             padding-top: 20px;
         }
@@ -55,6 +56,7 @@ main_page_head = '''
         }
         .cast {
             font-size: 75%;
+            font-weight: normal;
             color: #333;
             }
         .bs-example{
@@ -126,6 +128,7 @@ main_page_content = '''
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#sectionA">Movies</a></li>
         <li><a data-toggle="tab" href="#sectionB">TV Shows</a></li>
+        <li><a data-toggle="tab" href="#sectionC">Games</a></li>
     </ul>
     <div class="tab-content">
         <div id="sectionA" class="tab-pane fade in active">
@@ -135,6 +138,10 @@ main_page_content = '''
         <div id="sectionB" class="tab-pane fade">
             <h3>TV Shows</h3>
             <p>{tv_show_tiles}</p>
+        </div>
+        <div id="sectionC" class="tab-pane fade">
+            <h3>Games</h3>
+            <p>{game_tiles}</p>
         </div>
     </div>
     </div>
@@ -161,13 +168,13 @@ tv_show_tile_content = '''
 <div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal"
  data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
-    <h2>{tv_show_title}</h2>
+    <h3>{tv_show_title}</h3>
+    <h4>TV Station</h4>
+    <div>{tv_show_station}</div>
     <h4>Cast</</h4>
     <div class="cast">{tv_show_cast}</div>
     <h4>Synopsis</h4>
     <div class="synopsis">{tv_show_synopsis}</div>
-    <h3>TV Station</h3>
-    <div>{tv_show_station}</div>
 </div>
 '''
 
@@ -175,11 +182,11 @@ game_tile_content = '''
 <div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal"
  data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
-    <h2>{movie_title}</h2>
-    <h3>Cast</</h3>
-    <div class="cast">{movie_cast}</div>
+    <h2>{game_title}</h2>
+    <h3>Platform</</h3>
+    <div class="cast">{game_platform}</div>
     <h3>Synopsis</h3>
-    <div class="synopsis">{movie_synopsis}</div>
+    <div class="synopsis">{game_synopsis}</div>
 </div>
 '''
 
@@ -225,14 +232,34 @@ def create_tv_show_tiles_content(tv_shows):
         )
     return content
 
+def create_game_tiles_content(games):
+    # The HTML content for this section of the page
+    content = ''
+    for game in games:
+        # Extract the youtube ID from the url
+        youtube_id_match = re.search(r'(?<=v=)[^&#]+', game.trailer_youtube_url)
+        youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', game.trailer_youtube_url)
+        trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None
 
-def open_movies_page(movies, tv_shows):
+        # Append the tile for the tv show with its content filled in
+        content += game_tile_content.format(
+            game_title=game.title,
+            poster_image_url=game.poster_image_url,
+            trailer_youtube_id=trailer_youtube_id,
+            game_synopsis=game.synopsis,
+            game_platform=game.get_platform()
+        )
+    return content
+
+
+def open_movies_page(movies, tv_shows, games):
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
 
     # Replace the placeholder for the movie tiles and tv show tiles with the actual dynamically generated content
     rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies),
-                                                tv_show_tiles=create_tv_show_tiles_content(tv_shows))
+                                                tv_show_tiles=create_tv_show_tiles_content(tv_shows),
+                                                game_tiles=create_game_tiles_content(games))
 
     # Output the file
     output_file.write(main_page_head + rendered_content)

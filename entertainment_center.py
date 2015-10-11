@@ -16,16 +16,22 @@ brother = media.Movie("O Brother, Where Art Thou?", "In the deep south during th
 budapest = media.Movie("The Grand Budapest Hotel", "The adventures of Gustave H, a legendary concierge at a famous hotel from the fictional Republic of Zubrowka between the first and second World Wars, and Zero Moustafa, the lobby boy who becomes his most trusted friend.", "Keep your hands off my lobby boy!", "img/budapest.jpg", "https://www.youtube.com/watch?v=2bTbW70umbQ", "Wes Anderson", "Ralph Fiennes, F. Murray Abraham, Mathieu Amalric, et. al." )
 
 # Create Instances of media.tv_shows (title, synopsis, tv_station, poster_image_url, trailer_youtube_url, cast):
-sopranos = media.TvShow("The Sopranos", "New Jersey mob boss, Tony Soprano, deals with personal and professional issues in his home and business life.", "HBO", "img/sopranos.jpg","https://www.youtube.com/watch?v=wrN2k3qGbVA", "James Gandolfini, Cast Two")
+sopranos = media.TvShow("The Sopranos", "New Jersey mob boss, Tony Soprano, deals with personal and professional issues in his home and business life.", "HBO", "img/sopranos.jpg","https://www.youtube.com/watch?v=wrN2k3qGbVA", "James Gandolfini, Lorraine Bracco, Edie Falco, et. al.")
 
-thewire = media.TvShow("The Wire", "Baltimore drug scene, seen through the eyes of drug dealers and law enforcement.", "HBO", "img/the_wire.jpg","https://www.youtube.com/watch?v=W3vNEd1mkaI", "Cast One, Cast Two, Cast Three")
+thewire = media.TvShow("The Wire", "Baltimore drug scene, seen through the eyes of drug dealers and law enforcement.", "HBO", "img/the_wire.jpg","https://www.youtube.com/watch?v=W3vNEd1mkaI", "Dominic West, Lance Riddick, Sonja Sohn, et. al.")
 
-#the_witcher = media.Game("The Witcher", "The world doesn't need a hero, it needs a professional!", 5, 'XBOX One')
+captain_future = media.TvShow("Captain Future", "This series documents the adventures of Captain Future and the crew of his ship, the Comet.", "NHK", "img/captain_future.jpg", "https://www.youtube.com/watch?v=FZLG0mEDPc8", "Anime")
 
-#print(the_witcher.title)
-#print(the_witcher.synopsis)
-#print(the_witcher.rating)
-#print(the_witcher.platform)
+life_on_mars = media.TvShow("Life on Mars", "After being involved in a car accident in 2006, DCI Sam Tyler wakes up to find himself in 1973, the era of 'Sweeney' type policing, Mark III Cortinas, and flared trousers.", "BBC", "img/life_on_mars.jpg", "https://www.youtube.com/watch?v=cmmFwGgC4aU", "Jon Simm, Philip Glenister, Liz White, et. al.")
+
+tatortreiniger = media.TvShow("Der Tatortreiniger", "The bizarre everyday adventures of Heiko \"Schotty\" Schotte, whose profession is to clean up crime scenes.", "NDR", "img/tatortreiniger.jpg", "https://www.youtube.com/watch?v=aRAQDNnmGRU", "Bjarne Mädel, Katharina M. Schubert, et. al.")
+
+firefly = media.TvShow("Firefly", "Five hundred years in the future, a renegade crew aboard a small spacecraft tries to survive as they travel the unknown parts of the galaxy and evade warring factions as well as authority agents out to get them.", "FOX", "img/firefly.jpg", "https://www.youtube.com/watch?v=mG9bSBGLtMc", "Nathan Fillion, Gina Torres, Alan Tudyk et. al.")
+
+
+# Instantiate objects of class media.Game
+the_witcher = media.Game("The Witcher", "The Witcher 3: Wild Hunt concludes the story of the witcher Geralt of Rivia, the series\' protagonist, whose story to date has been covered in the previous versions", "img/witcher3.jpeg", "https://www.youtube.com/watch?v=tDfa1Qp2SwA", "XBOX One, PS4, PC")
+
 
 movies = []
 movies.append(wild_at_heart)
@@ -36,8 +42,16 @@ movies.append(brother)
 movies.append(budapest)
 
 tv_shows = []
+tv_shows.append(life_on_mars)
+tv_shows.append(tatortreiniger)
+tv_shows.append(firefly)
 tv_shows.append(sopranos)
 tv_shows.append(thewire)
+tv_shows.append(captain_future)
+
+games = []
+games.append(the_witcher)
+
 
 # Create an new html page and open it in the systems standard browser by calling open_movies in fresh_tomatoes.py
-fresh_tomatoes.open_movies_page(movies, tv_shows)
+fresh_tomatoes.open_movies_page(movies, tv_shows, games)

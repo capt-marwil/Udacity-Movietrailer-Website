@@ -47,6 +47,12 @@ class TvShow(Digital_asset):
 
 class Game(Digital_asset):
     """A class to store and display information on tv shows inherits from Digital_asset"""
-    def __init__(self, title, synopsis, platform):
-        Digital_asset.__init__(self, title, synopsis)
-        self.platform = platform
+    def __init__(self, title, synopsis, poster_image_url, trailer_youtube_url, platform):
+        Digital_asset.__init__(self, title, synopsis, poster_image_url, trailer_youtube_url)
+        self.platform = platform.split(',')
+
+    def get_platform(self):
+        platform = ""
+        for i in self.platform:
+            platform = platform + i + "<br>"
+        return platform
