@@ -145,26 +145,26 @@ main_page_content = '''
 
 # A single movie entry html template
 movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal"
+ data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
-    <h2>{movie_title}</h2>
-    <h3>{movie_storyline}</h3>
-    <h3>Cast</</h3>
+    <h3>{movie_title}</h3>
+    <div>{movie_storyline}</div>
+    <h4>Cast</</h4>
     <div class="cast">{movie_cast}</div>
-    <h3>Synopsis</h3>
+    <h4>Synopsis</h4>
     <div class="synopsis">{movie_synopsis}</div>
-    <h3>Rating</h3>
-    <div>{movie_rating}</div>
-</div>
+   </div>
 '''
-
+# A single tv show entry html template
 tv_show_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal"
+ data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{tv_show_title}</h2>
-    <h3>Cast</</h3>
+    <h4>Cast</</h4>
     <div class="cast">{tv_show_cast}</div>
-    <h3>Synopsis</h3>
+    <h4>Synopsis</h4>
     <div class="synopsis">{tv_show_synopsis}</div>
     <h3>TV Station</h3>
     <div>{tv_show_station}</div>
@@ -172,15 +172,14 @@ tv_show_tile_content = '''
 '''
 
 game_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal"
+ data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{movie_title}</h2>
     <h3>Cast</</h3>
     <div class="cast">{movie_cast}</div>
     <h3>Synopsis</h3>
     <div class="synopsis">{movie_synopsis}</div>
-    <h3>Rating</h3>
-    <div>{movie_rating}</div>
 </div>
 '''
 
@@ -200,7 +199,6 @@ def create_movie_tiles_content(movies):
             movie_storyline=movie.movie_storyline,
             poster_image_url=movie.poster_image_url,
             trailer_youtube_id=trailer_youtube_id,
-            movie_rating=movie.rating,
             movie_synopsis=movie.synopsis,
             movie_cast=movie.get_cast()
         )
@@ -216,7 +214,7 @@ def create_tv_show_tiles_content(tv_shows):
         youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', tv_show.trailer_youtube_url)
         trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None
 
-        # Append the tile for the movie with its content filled in
+        # Append the tile for the tv show with its content filled in
         content += tv_show_tile_content.format(
             tv_show_title=tv_show.title,
             poster_image_url=tv_show.poster_image_url,
@@ -229,16 +227,18 @@ def create_tv_show_tiles_content(tv_shows):
 
 
 def open_movies_page(movies, tv_shows):
-  # Create or overwrite the output file
-  output_file = open('fresh_tomatoes.html', 'w')
+    # Create or overwrite the output file
+    output_file = open('fresh_tomatoes.html', 'w')
 
-  # Replace the placeholder for the movie tiles with the actual dynamically generated content
-  rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies), tv_show_tiles=create_tv_show_tiles_content(tv_shows))
+    # Replace the placeholder for the movie tiles and tv show tiles with the actual dynamically generated content
+    rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies),
+                                                tv_show_tiles=create_tv_show_tiles_content(tv_shows))
 
-  # Output the file
-  output_file.write(main_page_head + rendered_content)
-  output_file.close()
+    # Output the file
+    output_file.write(main_page_head + rendered_content)
+    output_file.close()
 
-  # open the output file in the browser
-  url = os.path.abspath(output_file.name)
-  webbrowser.open('file://' + url, new=2) # open in a new tab, if possible
+    # open the output file in the browser
+    url = os.path.abspath(output_file.name)
+    # open in a new tab, if possible
+    webbrowser.open('file://' + url, new=2)
