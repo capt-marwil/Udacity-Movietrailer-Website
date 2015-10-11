@@ -13,7 +13,6 @@ main_page_head = '''
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <script src="src="js/star-rating.js" type="text/javascript""></script>
     <style type="text/css" media="screen">
         body {
             padding-top: 80px;
@@ -54,6 +53,14 @@ main_page_head = '''
             top: 0;
             background-color: white;
         }
+        .cast {
+            font-size: 75%;
+            color: #333;
+            }
+        .bs-example{
+            margin: 20px;
+            display-type: block;
+            }
     </style>
     <script type="text/javascript" charset="utf-8">
         // Pause the video when the modal is closed
@@ -63,21 +70,24 @@ main_page_head = '''
             $("#trailer-video-container").empty();
         });
         // Start playing the video whenever the trailer modal is opened
-        $(document).on('click', '.movie-tile', function (event) {
+        $(document).on('click', '.movie-tile:visible', function (event) {
             var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
             var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
             $("#trailer-video-container").empty().append($("<iframe></iframe>", {
-              'id': 'trailer-video',
-              'type': 'text-html',
-              'src': sourceUrl,
-              'frameborder': 0
+            'visible': 'true',
+            'id': 'trailer-video',
+            'type': 'text-html',
+            'src': sourceUrl,
+            'frameborder': 0
             }));
         });
-        // Animate in the movies when the page loads
+        // Animate in the movies when the page loads and check wether tab is visible
         $(document).ready(function () {
-          $('.movie-tile').hide().first().show("fast", function showNext() {
-            $(this).next("div").show("fast", showNext);
-          });
+            $('.tab-content:visible').animate(function() {
+                $('.movie-tile').hide().first().show("fast", function showNext() {
+                    $(this).next("div").show("fast", showNext);
+                });
+            });
         });
     </script>
 </head>
@@ -112,7 +122,22 @@ main_page_content = '''
       </div>
     </div>
     <div class="container">
-      {movie_tiles}
+    <div class="bs-example">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#sectionA">Movies</a></li>
+        <li><a data-toggle="tab" href="#sectionB">TV Shows</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="sectionA" class="tab-pane fade in active">
+            <h3>Movies</h3>
+            <p>{movie_tiles}</p>
+        </div>
+        <div id="sectionB" class="tab-pane fade">
+            <h3>TV Shows</h3>
+            <p>{tv_show_tiles}</p>
+        </div>
+    </div>
+    </div>
     </div>
   </body>
 </html>
@@ -124,8 +149,41 @@ movie_tile_content = '''
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{movie_title}</h2>
     <h3>{movie_storyline}</h3>
+    <h3>Cast</</h3>
+    <div class="cast">{movie_cast}</div>
+    <h3>Synopsis</h3>
+    <div class="synopsis">{movie_synopsis}</div>
+    <h3>Rating</h3>
+    <div>{movie_rating}</div>
 </div>
 '''
+
+tv_show_tile_content = '''
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+    <img src="{poster_image_url}" width="220" height="342">
+    <h2>{tv_show_title}</h2>
+    <h3>Cast</</h3>
+    <div class="cast">{tv_show_cast}</div>
+    <h3>Synopsis</h3>
+    <div class="synopsis">{tv_show_synopsis}</div>
+    <h3>TV Station</h3>
+    <div>{tv_show_station}</div>
+</div>
+'''
+
+game_tile_content = '''
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+    <img src="{poster_image_url}" width="220" height="342">
+    <h2>{movie_title}</h2>
+    <h3>Cast</</h3>
+    <div class="cast">{movie_cast}</div>
+    <h3>Synopsis</h3>
+    <div class="synopsis">{movie_synopsis}</div>
+    <h3>Rating</h3>
+    <div>{movie_rating}</div>
+</div>
+'''
+
 
 def create_movie_tiles_content(movies):
     # The HTML content for this section of the page
@@ -141,16 +199,41 @@ def create_movie_tiles_content(movies):
             movie_title=movie.title,
             movie_storyline=movie.movie_storyline,
             poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
+            trailer_youtube_id=trailer_youtube_id,
+            movie_rating=movie.rating,
+            movie_synopsis=movie.synopsis,
+            movie_cast=movie.get_cast()
         )
     return content
 
-def open_movies_page(movies):
+
+def create_tv_show_tiles_content(tv_shows):
+    # The HTML content for this section of the page
+    content = ''
+    for tv_show in tv_shows:
+        # Extract the youtube ID from the url
+        youtube_id_match = re.search(r'(?<=v=)[^&#]+', tv_show.trailer_youtube_url)
+        youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', tv_show.trailer_youtube_url)
+        trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None
+
+        # Append the tile for the movie with its content filled in
+        content += tv_show_tile_content.format(
+            tv_show_title=tv_show.title,
+            poster_image_url=tv_show.poster_image_url,
+            trailer_youtube_id=trailer_youtube_id,
+            tv_show_station=tv_show.tv_station,
+            tv_show_synopsis=tv_show.synopsis,
+            tv_show_cast=tv_show.get_cast()
+        )
+    return content
+
+
+def open_movies_page(movies, tv_shows):
   # Create or overwrite the output file
   output_file = open('fresh_tomatoes.html', 'w')
 
   # Replace the placeholder for the movie tiles with the actual dynamically generated content
-  rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies))
+  rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies), tv_show_tiles=create_tv_show_tiles_content(tv_shows))
 
   # Output the file
   output_file.write(main_page_head + rendered_content)
