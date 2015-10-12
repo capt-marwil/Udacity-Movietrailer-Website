@@ -46,7 +46,7 @@ MovieTrailerWebsites
 
 How to Run Project
 ------------------
-- Unzip MovieTrailerWebsite into a directory using your favorite unzipper e.g. on the commandline use unzip > unzip -d MovieTrailerWebsite.zip
+- Unzip MovieTrailerWebsite into a directory using your favorite unzipper e.g. on the commandline use "unzip MovieTrailerWebsite.zip"
 - Open a console and navigate to the Projects Root Directory 'MovieTrailerWebsite'
 - Type 'python entertainment_center.py' at the prompt
 - Your systems default webbrowser opens and display the page
