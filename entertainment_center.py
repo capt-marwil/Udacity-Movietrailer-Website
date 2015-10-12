@@ -170,6 +170,7 @@ dragon_age_inquistiton = media.Game(
     "https://www.youtube.com/watch?v=jJqxfkgSUog",
     "XBOX 330, XBOX One, PS3, PS4, Microsoft Windows")
 
+# Create an empty list and append instances of movies to it
 movies = []
 movies.append(wild_at_heart)
 movies.append(down_by_law)
@@ -178,6 +179,7 @@ movies.append(godfather)
 movies.append(brother)
 movies.append(budapest)
 
+# Create an empty list and append instances of tv-shows to it
 tv_shows = []
 tv_shows.append(life_on_mars)
 tv_shows.append(tatortreiniger)
@@ -186,6 +188,7 @@ tv_shows.append(sopranos)
 tv_shows.append(thewire)
 tv_shows.append(captain_future)
 
+# Create an empty list and append instances of games to it
 games = []
 games.append(tentacle)
 games.append(indiana_jones)
