@@ -5,6 +5,7 @@ Required Libraries and Dependencies
 -----------------------------------
 Requires Python 2.7.x to be installed
 
+Depends on the following versions of the Bootstrap framework and jquery
 https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css
 https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css
 http://code.jquery.com/jquery-1.10.1.min.js
