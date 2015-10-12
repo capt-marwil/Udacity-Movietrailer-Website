@@ -3,7 +3,7 @@ Project: Movie Trailer Website  - Marcus Willemsen
 
 Required Libraries and Dependencies
 -----------------------------------
-Requires Python 2.7.x to be installed on computer
+Requires Python 2.7.x to be installed
 
 https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css
 https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css
