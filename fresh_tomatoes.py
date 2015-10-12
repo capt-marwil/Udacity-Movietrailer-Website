@@ -33,7 +33,7 @@ main_page_head = '''
             height: 100%;
         }
         .movie-tile {
-            height: 680px;
+            height: 700px;
             margin-bottom: 20px;
             padding-top: 20px;
         }
@@ -54,12 +54,12 @@ main_page_head = '''
             top: 0;
             background-color: white;
         }
-        .cast {
+        .media-info {
             font-size: 75%;
             font-weight: normal;
             color: #333;
             }
-        .bs-example{
+        .media-tabs{
             margin: 20px;
             display-type: block;
             }
@@ -118,13 +118,13 @@ main_page_content = '''
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
+            <a class="navbar-brand" href="#">Fresh Tomatoes Movie, Games and TV Show Trailers</a>
           </div>
         </div>
       </div>
     </div>
     <div class="container">
-    <div class="bs-example">
+    <div class="media-tabs">
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#sectionA">Movies</a></li>
         <li><a data-toggle="tab" href="#sectionB">TV Shows</a></li>
@@ -157,10 +157,12 @@ movie_tile_content = '''
     <img src="{poster_image_url}" width="220" height="342">
     <h3>{movie_title}</h3>
     <div>{movie_storyline}</div>
+    <h4>Director</h4>
+    <div class="media-info">{director}</div>
     <h4>Cast</</h4>
-    <div class="cast">{movie_cast}</div>
+    <div class="media-info">{movie_cast}</div>
     <h4>Synopsis</h4>
-    <div class="synopsis">{movie_synopsis}</div>
+    <div class="media-info">{movie_synopsis}</div>
    </div>
 '''
 # A single tv show entry html template
@@ -172,9 +174,9 @@ tv_show_tile_content = '''
     <h4>TV Station</h4>
     <div>{tv_show_station}</div>
     <h4>Cast</</h4>
-    <div class="cast">{tv_show_cast}</div>
+    <div class="media-info">{tv_show_cast}</div>
     <h4>Synopsis</h4>
-    <div class="synopsis">{tv_show_synopsis}</div>
+    <div class="media-info">{tv_show_synopsis}</div>
 </div>
 '''
 
@@ -182,11 +184,11 @@ game_tile_content = '''
 <div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal"
  data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
-    <h2>{game_title}</h2>
-    <h3>Platform</</h3>
-    <div class="cast">{game_platform}</div>
-    <h3>Synopsis</h3>
-    <div class="synopsis">{game_synopsis}</div>
+    <h3>{game_title}</h3>
+    <h4>Platform</</h4>
+    <div class="media-info">{game_platform}</div>
+    <h4>Synopsis</h4>
+    <div class="media-info">{game_synopsis}</div>
 </div>
 '''
 
@@ -205,6 +207,7 @@ def create_movie_tiles_content(movies):
             movie_title=movie.title,
             movie_storyline=movie.movie_storyline,
             poster_image_url=movie.poster_image_url,
+            director=movie.director,
             trailer_youtube_id=trailer_youtube_id,
             movie_synopsis=movie.synopsis,
             movie_cast=movie.get_cast()
@@ -232,6 +235,7 @@ def create_tv_show_tiles_content(tv_shows):
         )
     return content
 
+
 def create_game_tiles_content(games):
     # The HTML content for this section of the page
     content = ''
@@ -256,10 +260,13 @@ def open_movies_page(movies, tv_shows, games):
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
 
-    # Replace the placeholder for the movie tiles and tv show tiles with the actual dynamically generated content
-    rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies),
-                                                tv_show_tiles=create_tv_show_tiles_content(tv_shows),
-                                                game_tiles=create_game_tiles_content(games))
+    # Replace the placeholder for the movie tiles, tv show tiles and games tiles
+    # with the actual dynamically generated content
+    rendered_content = main_page_content.format(
+        movie_tiles=create_movie_tiles_content(movies),
+        tv_show_tiles=create_tv_show_tiles_content(tv_shows),
+        game_tiles=create_game_tiles_content(games)
+        )
 
     # Output the file
     output_file.write(main_page_head + rendered_content)

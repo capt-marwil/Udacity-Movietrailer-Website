@@ -1,11 +1,6 @@
-__author__ = 'marwil'
-import webbrowser
-
-
-
 class Digital_asset(object):
-    """ A general class to represent digital assets such as Movies, TV-shows, Games etc.
-    """
+    """ A general class to represent digital assets such as Movies, TV-shows, Games etc."""
+
     def __init__(self, title, synopsis, poster_image_url, trailer_youtube_url):
         self.title = title
         self.synopsis = synopsis
@@ -42,7 +37,6 @@ class TvShow(Digital_asset):
         for i in self.cast:
             cast = cast + i + "<br>"
         return cast
-
 
 
 class Game(Digital_asset):
